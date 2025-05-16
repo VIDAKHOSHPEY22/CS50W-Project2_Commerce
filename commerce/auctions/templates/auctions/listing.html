@@ -1,0 +1,235 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<style>
+    body {
+        background-color: #f8f9fa; /* پس‌زمینه روشن */
+        color: #333;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #007bff;
+        font-size: 26px;
+        margin-bottom: 15px;
+    }
+
+    .listing-details p {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+
+    .listing-image {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 8px;
+        display: block;
+        margin: 15px auto;
+    }
+
+    .error-message {
+        background-color:#dc3545 ;
+        color: #d7ea04;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .bid-form, .comment-form, form {
+        text-align: center;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .bid-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .watchlist-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+
+    }
+    .close-auction-button{
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .bid-button:hover, .watchlist-button:hover, .close-auction-button:hover {
+        background-color: #b30000;
+    }
+
+    .comment-list {
+        padding-left: 0;
+    }
+
+    .comment-list li {
+        background: #f1f1f1;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        list-style: none;
+    }
+    .winner-highlight {
+        background-color: #28a745;
+        color: #ffffff; /* سبز */
+        font-size: 22px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+
+    @media (max-width: 600px) {
+        .container {
+            padding: 10px;
+        }
+
+        .listing-image {
+            width: 100%;
+        }
+
+        .bid-button, .watchlist-button, .close-auction-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>{{ listing.title }}</h2>
+
+    <div class="listing-details">
+        <p><strong>Description:</strong> {{ listing.description }}</p>
+        <p><strong>Starting Bid:</strong> ${{ listing.starting_bid }}</p>
+        <p><strong>Current Price:</strong> ${{ highest_bid|floatformat:2 }}</p>
+        <p><strong>Category:</strong> {{ listing.category }}</p>
+        <p><strong>Owner:</strong> {{ listing.owner.username }}</p>
+        <p class="upload-date">
+            <strong>Created:</strong> {{ listing.created_at|date:"F d, Y" }} at {{ listing.created_at|time:"H:i" }}
+        </p>
+
+        {% load static %}
+
+        {% if listing.image_url %}
+            <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-image">
+        {% else %}
+            <img src="{% static 'auctions/images/no-image.png' %}" alt="No image available" class="listing-image">
+        {% endif %}
+    </div>
+
+    <hr>
+
+    {% if message %}
+        <p class="error-message">{{ message }}</p>
+    {% endif %}
+
+    {% if listing.winner %}
+    {% if listing.winner == request.user %}
+        <p class="winner-highlight">Winner: You Won!</p>
+    {% else %}
+        <p class="winner-highlight">Winner: {{ listing.winner.username }}</p>
+    {% endif %}
+{% else %}
+    <p><strong>Winner:</strong> No winner assigned yet.</p>
+{% endif %}
+
+
+    <hr>
+
+    {% if user.is_authenticated %}
+        {% if listing.active %}
+            <form action="{% url 'place_bid' listing.id %}" method="POST" class="bid-form">
+                {% csrf_token %}
+                <input type="number" name="bid" step="0.01" min="{{ highest_bid|floatformat:2 }}" required>
+                <button type="submit" class="bid-button">Place a Bid</button>
+            </form>
+        {% endif %}
+
+        <hr>
+
+        <form action="{% url 'toggle_watchlist' listing.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="watchlist-button">
+                {% if in_watchlist %}
+                    Remove from Watchlist
+                {% else %}
+                    Add to Watchlist
+                {% endif %}
+            </button>
+        </form>
+
+        <hr>
+
+        <h3>Comments</h3>
+        <ul class="comment-list">
+            {% for comment in listing.comments.all %}
+                <li>
+                    <strong>{{ comment.user.username }}</strong> ({{ comment.timestamp|date:"Y-m-d H:i" }}):
+                    {{ comment.content }}
+                </li>
+            {% endfor %}
+        </ul>
+        
+        {% if not listing.comments.all %}
+            <p>No comments yet.</p>
+        {% endif %}
+        
+        <form action="{% url 'add_comment' listing.id %}" method="post" class="comment-form">
+            {% csrf_token %}
+            <textarea name="comment" rows="3" required placeholder="Write your comment..."></textarea>
+            <button type="submit">Add Comment</button>
+        </form>
+
+        <hr>
+
+        {% if user == listing.owner and listing.active %}
+            <form action="{% url 'close_auction' listing.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="close-auction-button">Close Auction</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p><a href="{% url 'login' %}">Log in</a> to place bids and add comments.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

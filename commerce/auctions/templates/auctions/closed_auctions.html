@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h2>Closed Auctions</h2>
+
+{% if listings %}
+    {% for listing in listings %}
+        <div class="auction-item">
+            <h3><a href="{% url 'listing_detail' listing.id %}">{{ listing.title }}</a></h3>
+            <p><strong>Final Price:</strong> ${{ listing.starting_bid }}</p>
+            
+            <!-- نمایش تصویر -->
+            {% if listing.image_url %}
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" width="200">
+            {% else %}
+                <img src="{% static 'auctions/images/no-image.png' %}" alt="No image available" width="200">
+            {% endif %}
+
+            <!-- نمایش برنده‌ی مزایده -->
+            {% if listing.winner %}
+                {% if listing.winner == request.user %}
+                    <p><strong>Winner:</strong> You Won!</p>
+                {% else %}
+                    <p><strong>Winner:</strong> {{ listing.winner.username }}</p>
+                {% endif %}
+            {% else %}
+                <p><strong>Winner:</strong> No winner assigned.</p>
+            {% endif %}
+
+            <hr>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No closed auctions yet.</p>
+{% endif %}
+
+{% endblock %}

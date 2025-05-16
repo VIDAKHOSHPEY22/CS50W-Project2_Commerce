@@ -1,0 +1,141 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        color: #333;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .watchlist-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 15px;
+    }
+
+    .watchlist-item {
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .listing-info {
+        flex: 1;
+    }
+
+    .listing-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .listing-title:hover {
+        color: #0056b3;
+    }
+
+    .listing-price {
+        font-size: 16px;
+        font-weight: bold;
+        color: #27ae60;
+    }
+
+    .listing-image {
+        width: 100px;
+        border-radius: 5px;
+    }
+
+    .watchlist-button {
+        background-color: #ff0000;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    .home-button{
+        background-color: #001eff;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+
+    }
+
+    .watchlist-button:hover {
+        background-color: #ff6c6c;
+        color: black;
+    }
+    .home-button:hover{
+        background-color: #6a91fd;
+        color: black;
+
+    }
+
+    .home-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+        .watchlist-item {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .listing-image {
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+<div class="watchlist-container">
+    <h2>My Watchlist</h2>
+
+    {% if watchlist_items %}
+        {% for item in watchlist_items %}
+            <div class="watchlist-item">
+                <div class="listing-info">
+                    <a href="{% url 'listing_detail' item.listing.id %}" class="listing-title">{{ item.listing.title }}</a>
+                    <p class="listing-price">Current Price: ${{ item.listing.starting_bid }}</p>
+                    <p><strong>Category:</strong> {{ item.listing.category|default:"No category" }}</p>
+                    <p><strong>Owner:</strong> {{ item.listing.owner.username }}</p>
+                </div>
+
+                {% if item.listing.image_url %}
+                    <img src="{{ item.listing.image_url }}" alt="{{ item.listing.title }}" class="listing-image">
+                {% endif %}
+
+                <form action="{% url 'toggle_watchlist' item.listing.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="watchlist-button">Remove</button>
+                </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Your watchlist is empty.</p>
+    {% endif %}
+</div>
+
+<!-- دکمه "Back to Home" -->
+<div class="home-container">
+    <a href="{% url 'index' %}">
+        <button class="home-button">Back to Home</button>
+    </a>
+</div>
+
+{% endblock %}

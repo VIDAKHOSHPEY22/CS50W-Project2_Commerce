@@ -1,0 +1,75 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="container" style="max-width: 900px;">
+        <h2 class="text-center">Active Listings</h2>
+
+        <div class="row">
+            <!-- ناوبری دسته‌بندی‌ها -->
+            <div class="col-md-3">
+                <div class="category-nav mb-4">
+                    <h4>Categories</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="{% url 'index' %}">All Listings</a></li>
+                        <li class="list-group-item"><a href="{% url 'category' category='electronics' %}">Electronics</a></li>
+                        <li class="list-group-item"><a href="{% url 'category' category='fashion' %}">Fashion</a></li>
+                        <li class="list-group-item"><a href="{% url 'category' category='watches' %}">Watches</a></li>
+                        <li class="list-group-item"><a href="{% url 'category' category='accessories' %}">Accessories</a></li>
+                        <li class="list-group-item"><a href="{% url 'category' category='sports' %}">Sports</a></li>
+                        <li class="list-group-item"><a href="{% url 'category' category='home' %}">Home</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- لیست مزایده‌ها -->
+            <div class="col-md-9">
+                {% if listings %}
+                    <div class="row">
+                        {% for listing in listings %}
+                            <div class="col-12 mb-2">
+                                <div class="listing-item d-flex align-items-center">
+                                    <!-- تصویر در سمت چپ -->
+                                    <div class="listing-image">
+                                        {% if listing.image_url %}
+                                            <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid">
+                                        {% else %}
+                                            <img src="{% static 'auctions/images/no-image.png' %}" alt="No image available" class="img-fluid">
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <!-- توضیحات در سمت راست -->
+                                    <div class="listing-details ml-3">
+                                        <a href="{% url 'listing_detail' listing.id %}">
+                                            <h3 class="listing-title">{{ listing.title }}</h3>
+                                        </a>
+                                        <p><strong>Starting Bid:</strong> ${{ listing.starting_bid }}</p>
+                                        <p><strong>Category:</strong> {{ listing.category|default:"No category" }}</p>
+                                        <p><strong>Owner:</strong> {{ listing.owner.username }}</p>
+                                        <p class="upload-date">
+                                            <strong> Created:</strong> {{ listing.created_at|date:"F d, Y" }} at {{ listing.created_at|time:"H:i" }}
+                                        </p>
+
+                                        <!-- دکمه‌های فعال -->
+                                        <form action="{% url 'toggle_watchlist' listing.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit" class="watchlist-button">Add to Watchlist</button>
+                                        </form>
+
+                                        <form action="{% url 'place_bid' listing.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="number" name="bid" step="0.01" min="{{ listing.starting_bid }}" required>
+                                            <button type="submit" class="bid-button">Place a Bid</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-center">No active listings available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

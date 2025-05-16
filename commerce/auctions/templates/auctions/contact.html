@@ -1,0 +1,53 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        color: #333;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .contact-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    h2 {
+        color: #007bff;
+        font-size: 26px;
+        margin-bottom: 15px;
+    }
+
+    .contact-info {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    .contact-info a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .contact-info a:hover {
+        color: #0056b3;
+    }
+</style>
+
+<div class="contact-container">
+    <h2>Contact Us</h2>
+    <p class="contact-info">Email: <a href="mailto:support@auction.com">support@auction.com</a></p>
+    <p class="contact-info">Phone: +123 456 7890</p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        color: #333;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .about-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    h2 {
+        color: #007bff;
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .about-text {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .about-image {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+        .about-container {
+            padding: 15px;
+        }
+
+        .about-text {
+            font-size: 16px;
+        }
+    }
+</style>
+
+<div class="about-container">
+    <h2>About Us</h2>
+    <p class="about-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error provident rerum eaque quas optio tenetur at asperiores ea quo numquam laboriosam possimus cumque architecto, dolorum ullam ipsam illum eos quam!</p>
+</div>
+
+{% endblock %}

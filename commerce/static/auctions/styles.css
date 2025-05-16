@@ -1,0 +1,230 @@
+/* تنظیمات کلی */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* تنظیم اندازه مناسب برای محتوای اصلی */
+.container {
+    max-width: 900px; /* افزایش عرض برای نمایش بهتر فرم‌ها */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* تنظیم نمایش لیست محصولات */
+.listing-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* تنظیم اندازه کارت‌های محصول */
+.listing-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #ddd;
+}
+
+.listing-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* تنظیم اندازه تصاویر در کارت‌های محصول */
+.listing-image {
+    width: 100%;
+    max-width: 500px; /* تنظیم حداکثر عرض تصویر */
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    margin: 15px auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.listing-image:hover {
+    transform: scale(1.05);
+}
+
+.listing-image img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    transition: transform 0.3s ease-in-out;
+}
+
+.listing-image img:hover {
+    transform: scale(1.05);
+}
+
+/* تنظیم اندازه جزئیات آیتم */
+.listing-details {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* تنظیم اندازه متن‌ها */
+.listing-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.listing-details p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* استایل تاریخ آپلود */
+.upload-date {
+    font-size: 14px;
+    color: #888;
+    margin-top: 8px;
+}
+
+/* دکمه‌های عمومی */
+button {
+    background-color: #0074D9;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.07);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* دکمه‌های خاص */
+.watchlist-button {
+    background-color: #FF4136;
+}
+
+.watchlist-button:hover {
+    background-color: #D0021B;
+}
+
+/* تنظیمات فیلد عددی bid */
+.bid-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 10px auto;
+}
+
+.bid-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.bid-form input:focus {
+    border-color: #0074D9;
+    box-shadow: 0 0 5px rgba(0, 116, 217, 0.5);
+}
+
+.bid-button {
+    background-color: #2ECC40;
+}
+
+.bid-button:hover {
+    background-color: #1E9C30;
+}
+
+/* تنظیمات فرم */
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px; /* هماهنگی فرم با تصویر */
+    margin: 15px auto;
+}
+
+/* تنظیم اندازه فیلدهای ورودی */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease-in-out;
+    margin-bottom: 10px;
+}
+
+input:focus, textarea:focus {
+    border-color: #0074D9;
+    box-shadow: 0 0 5px rgba(0, 116, 217, 0.5);
+}
+
+/* تنظیمات ریسپانسیو */
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .listing-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .listing-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .listing-image {
+        max-width: 100%; /* تصویر به اندازه صفحه فیت شود */
+        height: auto;
+    }
+
+    form {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .bid-form {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+    }
+}

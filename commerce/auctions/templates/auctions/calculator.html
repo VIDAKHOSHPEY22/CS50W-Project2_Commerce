@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Auction Price Calculator</h2>
+
+    <form id="calculator-form">
+        <label for="starting_bid">Starting Bid ($):</label>
+        <input type="number" id="starting_bid" required>
+        <br>
+
+        <label for="bid_increment">Bid Increment ($):</label>
+        <input type="number" id="bid_increment" required>
+        <br>
+
+        <button type="button" onclick="calculateFinalPrice()">Calculate Final Price</button>
+    </form>
+
+    <h3>Final Price: <span id="final_price">---</span></h3>
+
+    <script>
+        function calculateFinalPrice() {
+            let startingBid = parseFloat(document.getElementById("starting_bid").value);
+            let bidIncrement = parseFloat(document.getElementById("bid_increment").value);
+            let finalPrice;
+
+            if (isNaN(startingBid) || isNaN(bidIncrement)) {
+                finalPrice = "Please enter valid numbers.";
+            } else {
+                finalPrice = startingBid + bidIncrement;
+            }
+
+            document.getElementById("final_price").innerText = finalPrice.toFixed(2);
+        }
+    </script>
+{% endblock %}

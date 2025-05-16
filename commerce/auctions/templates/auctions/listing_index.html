@@ -1,0 +1,120 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<style>
+    body {
+        background-color: #f8f9fa; /* پس‌زمینه روشن */
+        color: #333;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #007bff;
+        font-size: 26px;
+        margin-bottom: 15px;
+    }
+
+    .listing-item {
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .listing-info {
+        flex: 1;
+        padding-right: 10px;
+    }
+
+    .listing-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .listing-title:hover {
+        color: #0056b3;
+    }
+
+    .listing-price {
+        font-size: 16px;
+        font-weight: bold;
+        color: #27ae60;
+    }
+
+    .listing-image {
+        width: 120px;
+        border-radius: 5px;
+    }
+
+    .bid-button {
+        background-color: #007bff;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .bid-button:hover {
+        background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+        .listing-item {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .listing-image {
+            margin-bottom: 10px;
+        }
+
+        .bid-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>Active Listings</h2>
+
+    {% for listing in listings %}
+        <div class="listing-item">
+            <div class="listing-info">
+                <a href="{% url 'listing_detail' listing.id %}" class="listing-title">{{ listing.title }}</a>
+                <p>{{ listing.description }}</p>
+                <p class="listing-price">Starting Bid: ${{ listing.starting_bid }}</p>
+            </div>
+
+            {% if listing.image_url %}
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-image">
+            {% else %}
+                <img src="{% static 'auctions/images/no-image.png' %}" alt="No image available" class="listing-image">
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
